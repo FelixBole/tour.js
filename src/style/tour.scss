@@ -1,0 +1,66 @@
+$primary: #18243f;
+$secondary: #21bbee;
+
+.tour-bubble-container {
+    z-index: 1000;
+    position: fixed;
+    background: white;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 20px;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+
+    p {
+        color: black;
+    }
+
+    .tour-button-container {
+    
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+    
+        .tour-button {
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            border: none;
+        
+            &--previous {
+                background-color: $secondary;
+                color: white;
+            }
+        
+            &--next {
+                background-color: $primary;
+                color: white;
+            }
+        }
+    }
+}
+
+
+.tour-overlay {
+    z-index: 500;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: rgba(63, 65, 56, 0.459);
+
+    transition: all 0.3s ease;
+
+    &-above {
+        transform: scale(1);
+        z-index: 1000;
+    }
+}

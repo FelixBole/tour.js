@@ -1,0 +1,83 @@
+.tour-bubble-container {
+  z-index: 1000;
+  position: fixed;
+  background: white;
+  border-radius: 20px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+          box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 20px;
+  max-width: 300px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.tour-bubble-container p {
+  color: black;
+}
+
+.tour-bubble-container .tour-button-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+.tour-bubble-container .tour-button-container .tour-button {
+  border-radius: 15px;
+  padding: 10px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+          box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border: none;
+}
+
+.tour-bubble-container .tour-button-container .tour-button--previous {
+  background-color: #21bbee;
+  color: white;
+}
+
+.tour-bubble-container .tour-button-container .tour-button--next {
+  background-color: #18243f;
+  color: white;
+}
+
+.tour-overlay {
+  z-index: 500;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: rgba(63, 65, 56, 0.459);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.tour-overlay-above {
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  z-index: 1000;
+}
+/*# sourceMappingURL=tour.css.map */

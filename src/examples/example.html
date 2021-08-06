@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="./tour-one-file.js"></script>
+    <link rel="stylesheet" href="./tour.css">
+    
+    <script>
+        let tour;
+        let newTour;
+
+        function start() {
+            const steps = [
+                {
+                    id: "profileContainer",
+                    text: "Bonjour PLACEHOLDER-USERNAME, bienvenue sur cette visite guidée. Ce premier bloc concerne ton profil, tu peux librement éditer tes informations ici.",
+                },
+                {
+                    id: "usefulLinksContainer",
+                    text: "Tu trouveras ici tous les liens utiles pour comprendre un peu mieux ce que l'on fait chez Visions.",
+                },
+                {
+                    id: "notificationsContainer",
+                    text: "Cette section te permet de gérer toutes tes notifications.",
+                },
+                {
+                    id: "visionsAndYouContainer",
+                    text: "Cette section contient tes informations relatives au programme visionsAndYou. Comme tu peux le voir, tu possèdes actuellement PLACEHOLDER-STARS VisionsStars. Tu peux les échanger quand tu le souhaites."
+                }
+            ];
+
+            tour = new Tour("tour", steps);
+
+            const textVariables = {
+                USERNAME: "Felix",
+                STARS: 500
+            }
+
+            const options = {
+                disableScroll: true,
+                spotlight: true,
+            }
+
+            tour.setTextVariables(textVariables);
+            tour.setOptions(options);
+            tour.start();
+        }
+    </script>
+
+</body>
+</html>
