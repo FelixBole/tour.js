@@ -28,7 +28,7 @@ To run a demo, launch `example.html` from src/example in your favorite browser.
         // etc...
     ];
 
-    let tour = new Tour("tour", steps);
+    let tour = new Tour("tour", steps); // /!\ The first argument should be the name of the variable you declare /!\
 </script>
 ```
 
