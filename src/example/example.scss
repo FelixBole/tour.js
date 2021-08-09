@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 300vh;
+    position: relative;
+}
+
+.top-container {
+    position: relative;
+
+    .content {
+        display: flex;
+        flex-direction: row;
+        height: 40vh;
+    }
+
+    .top {
+        .left {
+            background: rgb(184, 60, 60);
+            flex: 2;
+        }
+    
+        .right {
+            background: rgb(115, 167, 19);
+            flex: 1;
+        }
+    }
+    
+    .bottom {
+        .left {
+            background: rgb(26, 143, 179);
+            flex: 1;
+        }
+    
+        .right {
+            background: rgb(155, 51, 155);
+            flex: 3;
+        }
+    }
+}
+
+.mid-container {
+    .content {
+        display: flex;
+        flex-direction: row;
+        height: 40vh;
+    }
+
+    .top {
+        .left {
+            background: rgb(216, 219, 48);
+            flex: 1;
+        }
+    
+        .right {
+            background: rgb(167, 19, 56);
+            flex: 1;
+        }
+    }
+}
+
+#controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+
+    button {
+        cursor: pointer;
+        padding: 5px 15px;
+        border-radius: 4px;
+        background: goldenrod;
+        font-weight: bold;
+        font-size: large;
+        color: white;
+        border: none;
+
+        &:hover {
+            background: none;
+            border: 1px solid goldenrod;
+            color: goldenrod;
+        }
+    }
+}
+
+#step5 {
+    height: 100px;
+    width: 100px;
+    background: white;
+
+    position: absolute;
+    transform-origin: center;
+    top: 35%;
+    left: 46%;
+}

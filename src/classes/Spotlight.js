@@ -1,20 +1,25 @@
 /**
- * Allows the creation of spotlight to put elements in evidence 
+ * Creates a spotlight to target specific elements in the dom 
  * and move the spotlight around the DOM relative to the element
  * 
- * Author Felix Bole <felix.bole@yahoo.fr>
+ * Author: Felix Bole <felix.bole@yahoo.fr>
+ * MIT license: http://opensource.org/licenses/MIT
+ * GitHub : github.com/FelixBole/tour.js
+ * How to use : Check Github README
+ * v1.0.0
+ * 
  */
-class Spotlight {
+ class Spotlight {
 
     /**
      * 
      * @param {number} padding The padding for the spotlight (space around the element)
      */
-    constructor(padding) {
+    constructor(padding = 0) {
         this.padding = padding;
         this.spotlight = [];
 
-        this.createSpotlight();
+        this.create();
     }
 
     /**
@@ -31,7 +36,7 @@ class Spotlight {
     
     /**
      * Moves the spotlight to the target element
-     * @param {DOMElement} element The element to put into spotlight
+     * @param {HTMLElement} element The element to put into spotlight
      */
     move(element) {
 
@@ -64,8 +69,7 @@ class Spotlight {
                 el.remove();
             })
         }
-
-        // this.spotlight = [];
+        
         return null;
     }
 }

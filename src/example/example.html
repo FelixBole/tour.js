@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="example.css">
+
+    <link rel="stylesheet" href="./../style/tour.css">
+</head>
+<body>
+    <div class="top-container">
+        <div class="content top">
+            <div id="step1" class="left"></div>
+            <div id="step2" class="right"></div>
+        </div>
+        <div class="content bottom">
+            <div id="step3" class="left"></div>
+            <div id="step4" class="right"></div>
+        </div>
+        <div id="step5"></div>
+    </div>
+
+
+    <div id="controls">
+        <button onclick="start()">Start the example tour</button>
+    </div>
+
+    <div class="mid-container">
+        <div class="content top">
+            <div id="step6" class="left"></div>
+            <div id="step7" class="right"></div>
+        </div>
+    </div>
+
+    <!-- <script src="./../classes/Spotlight.js"></script>
+    <script src="./../classes/Tour.js"></script> -->
+    <script src="./../../dist/tour.js"></script>
+    
+    <script>
+        let tour;
+        let newTour;
+
+        function start() {
+            const steps = [
+                {
+                    id: "step1",
+                    text: "Hello PLACEHOLDER-NAME, this is the first step of the tour. Click the next button to continue.",
+                },
+                {
+                    id: "step2",
+                    text: "As you can see, each step after step 1 has a previous button to go back to the previous targetted element. Go ahead try it !",
+                },
+                {
+                    id: "step3",
+                    text: "This word here -> PLACEHOLDER-SPECIALWORD <- was set by calling setTextVariables() and specifying a keyword to replace.",
+                },
+                {
+                    id: "step4",
+                    text: "This example contains a Spotlight. But it is not mandatory. The two classes can work distinctly from one another, and you can set if you wish to have a spotlight by calling setOptions() on the tour instance."
+                },
+                {
+                    id: "step5",
+                    text: "As you see it also works on absolutely positionned elements."
+                },
+                {
+                    id: "step6",
+                    text: "If you set a step of the tour to be outside of view distance, it will automatically scroll to that new element"
+                },
+                {
+                    id: "step7",
+                    text: "The help bubble adapts its position to the position and size of the targeted element."
+                }
+            ];
+
+            tour = new Tour("tour", steps);
+
+            console.log(tour);
+
+            const textVariables = {
+                NAME: "Friend",
+                SPECIALWORD: "cookies"
+            }
+
+            const options = {
+                disableScroll: true,
+                spotlight: true,
+                language: "en"
+            }
+
+            tour.setTextVariables(textVariables);
+            tour.setOptions(options);
+            tour.start();
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 300vh;
+  position: relative;
+}
+
+.top-container {
+  position: relative;
+}
+
+.top-container .content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  height: 40vh;
+}
+
+.top-container .top .left {
+  background: #b83c3c;
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
+}
+
+.top-container .top .right {
+  background: #73a713;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.top-container .bottom .left {
+  background: #1a8fb3;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.top-container .bottom .right {
+  background: #9b339b;
+  -webkit-box-flex: 3;
+      -ms-flex: 3;
+          flex: 3;
+}
+
+.mid-container .content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  height: 40vh;
+}
+
+.mid-container .top .left {
+  background: #d8db30;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.mid-container .top .right {
+  background: #a71338;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+#controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 20vh;
+}
+
+#controls button {
+  cursor: pointer;
+  padding: 5px 15px;
+  border-radius: 4px;
+  background: goldenrod;
+  font-weight: bold;
+  font-size: large;
+  color: white;
+  border: none;
+}
+
+#controls button:hover {
+  background: none;
+  border: 1px solid goldenrod;
+  color: goldenrod;
+}
+
+#step5 {
+  height: 100px;
+  width: 100px;
+  background: white;
+  position: absolute;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  top: 35%;
+  left: 46%;
+}
+/*# sourceMappingURL=example.css.map */

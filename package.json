@@ -1,0 +1,28 @@
+{
+    "name": "tour.js",
+    "version": "1.0.0",
+    "description": "A lightweight JavaScript library for creating interactive tour guides",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/FelixBole/tour.js"
+    },
+    "keywords": [
+      "tour",
+      "guide",
+      "interactive"
+    ],
+    "author": "Felix Bole",
+    "license": "MIT",
+    "files": [
+      "Tour.js",
+      "Spotlight.js",
+      "tour.min.js"
+    ],
+    "bugs": {
+      "url": "https://github.com/FelixBole/tour.js/issues"
+    },
+    "homepage": "https://github.com/FelixBole/tour.js"
+  }

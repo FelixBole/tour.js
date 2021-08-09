@@ -1,128 +1,17 @@
 /**
- * Creates a spotlight to target specific elements in the dom 
- * and move the spotlight around the DOM relative to the element
- * 
- * Author Felix Bole <felix.bole@yahoo.fr>
- */
-class Spotlight {
-
-    /**
-     * 
-     * @param {number} padding The padding for the spotlight (space around the element)
-     */
-    constructor(padding) {
-        this.padding = padding;
-        this.spotlight = [];
-
-        this.create();
-    }
-
-    /**
-     * Creates the 4 blocks that will serve as spotlight
-     */
-    create() {
-        for(let i = 0; i < 4; i++) {
-            let o = document.createElement('div');
-            o.classList.add("tour-overlay")
-            document.body.appendChild(o);
-            this.spotlight.push(o);
-        }
-    }
-    
-    /**
-     * Moves the spotlight to the target element
-     * @param {DOMElement} element The element to put into spotlight
-     */
-    move(element) {
-
-        const rect = element.getBoundingClientRect();
-
-        this.spotlight[0].style.top = (rect.top - this.padding - this.spotlight[0].getBoundingClientRect().height) + "px";
-
-        this.spotlight[1].style.left = (rect.right + this.padding) + "px";
-        this.spotlight[1].style.top = (rect.top - this.padding) + "px";
-
-        this.spotlight[2].style.top = (rect.bottom + this.padding) + "px";
-
-        this.spotlight[3].style.left = (rect.left - this.padding - this.spotlight[3].getBoundingClientRect().width) + "px";
-        this.spotlight[3].style.top = (rect.top - this.padding) + "px";
-
-        // Set size for the blocks to not overlay each other
-        // Top/Bottom remain unchanged.
-
-        this.spotlight[3].style.height = rect.height + (this.padding * 2) + "px";
-        this.spotlight[1].style.height = rect.height + (this.padding * 2) + "px";
-    }
-    
-    /**
-     * Removes the spotlight from the DOM and resets array
-     * @returns {null}
-     */
-    kill() {
-        if(this.spotlight.length != 0) {
-            this.spotlight.forEach(el => {
-                el.remove();
-            })
-        }
-
-        // this.spotlight = [];
-        return null;
-    }
-}
-
-/**
  * Allows the creation of interactive tours
  * 
  * Author: Felix Bole <felix.bole@yahoo.fr>
+ * MIT license: http://opensource.org/licenses/MIT
+ * GitHub : github.com/FelixBole/tour.js
+ * How to use : Check Github README
+ * v1.0.0
+ * 
  */
-class Tour {
-
-    states = {
-        0: "configuration",
-        1: "started",
-        2: "finished",
-    };
-
-    /**
-     * The current Tour state key
-     * @type number
-     */
-    currentState;
-
-    /**
-     * Current target element
-     * @type DOMElement
-     */
-    currentElement;
-
-    /**
-     * @type DOMelement
-     */
-    helpBubbleElement;
-
-    /**
-     * Spotlight
-     * @type Spotlight
-     */
-    spotlight;
-
-    /**
-     * Object containing the different variables to replace in text
-     * @type object
-     */
-    textVariables = {}
-
-    /**
-     * Options for the Tour, default are set in class
-     * @type object
-     */
-    options = {};
-
+ class Tour {
     /**
      * @param {string} varName The name of the variable for the instance
-     * @param {string} userName The user's name
-     * @param {number} stars The amount of VisionsStars the user has
-     * @param {array} steps Array of objeects with element ID & text for each step
+     * @param {array} steps Array of objects with element ID & text for each step
      * @param {number} step The current step of the tour
      */
     constructor(varName, steps, step = 0) {
@@ -132,6 +21,25 @@ class Tour {
 
         this.currentState = 0;
 
+        /**
+         * @type HTMLElement
+         */
+        this.currentElement = null;
+        /**
+         * @type HTMLElement
+         */
+
+        this.popupElement = null;
+
+        /**
+         * @type Spotlight
+         */
+        this.spotlight = null;
+
+        this.textVariables = {};
+        this.options = {};
+
+
         this.setOptions();
     }
 
@@ -140,12 +48,14 @@ class Tour {
      * @param {string} varName The name of the variable for the new instance
      * @returns {Tour} The saved tour from sessionStorage
      */
-    static getTourAndStep(varName) {
+    static getSavedTour(varName) {
         let tour = sessionStorage.getItem('tour');
         tour = JSON.parse(tour);
 
-        let newTour = new Tour(varName, tour.userName, parseInt(tour.stars), tour.steps, parseInt(tour.step))
-
+        let newTour = new Tour(varName, tour.steps, parseInt(tour.step));
+        
+        newTour.spotlight = tour.spotlight;
+        newTour.setTextVariables(tour.textVariables);
         newTour.setOptions(tour.options);
 
         return newTour;
@@ -162,13 +72,15 @@ class Tour {
 
     /**
      * Set options to override the tour
-     * @defaults 
-     *  disableScroll: true
-     *  spotlight: true
+     * @param {object} options Options to set
+     * @param {boolean} options.disableScroll If the scroll should be disabled when the popup shows
+     * @param {boolean} options.spotlight If the tour should contain a spotlight
+     * @param {string} options.language (en or fr) sets the default language for the buttons on the help popup
      */
-    setOptions({disableScroll = true, spotlight = true} = {}) {
+    setOptions({disableScroll = true, spotlight = true, language = "en"} = {}) {
         this.options.disableScroll = disableScroll;
         this.options.spotlight = spotlight;
+        this.options.language = language;
     }
 
     /**
@@ -176,16 +88,15 @@ class Tour {
      */
     save() {
         let tour = {
-            userName: this.userName,
             currentState: this.currentState.toString(),
-            stars: this.stars.toString(),
             steps: this.steps,
             step: this.step.toString(),
             styles: this.styles,
             options: this.options,
+            textVariables: this.textVariables,
         };
 
-        sessionStorage.setItem("tour", JSON.stringify(tour));
+        sessionStorage.setItem("Tour.js", JSON.stringify(tour));
     }
 
     /**
@@ -197,7 +108,7 @@ class Tour {
 
             this.setResizeEvent(true);
 
-            this.createBubble();
+            this.createPopup();
 
             if(this.options.spotlight)
                 this.spotlight = new Spotlight(10);
@@ -238,11 +149,11 @@ class Tour {
 
         this.currentElement = document.getElementById(elementId);
 
-        this.updateBubble();
+        this.updatePopup();
 
-        const coordinates = this.getHelpBubblePos(this.currentElement);
+        const coordinates = this.getPopupPos(this.currentElement);
 
-        this.moveBubble(coordinates);
+        this.movePopup(coordinates);
 
         if(this.options.spotlight)
             this.spotlight.move(this.currentElement);
@@ -255,9 +166,8 @@ class Tour {
      * Ends the tour
      */
     endTour() {
-        console.log("Tour finished");
         this.currentState = 2;
-        this.helpBubbleElement.remove();
+        this.popupElement.remove();
         this.setResizeEvent(false);
         
         if(this.options.spotlight)
@@ -279,7 +189,7 @@ class Tour {
      * @param {DOMElement} element The target element
      * @returns {object} x and y coordinates
      */
-    getHelpBubblePos(element) {
+    getPopupPos(element) {
 
         // Scroll first to get the right values of getBoundingClientRect
         element.scrollIntoView(this.getTopOrBottom(element));
@@ -287,40 +197,33 @@ class Tour {
         let docRect = document.body.getBoundingClientRect();
         let rect = element.getBoundingClientRect();
 
-        const bubbleRect = this.helpBubbleElement.getBoundingClientRect();
+        const popupRect = this.popupElement.getBoundingClientRect();
         
         const offset = 10;
         let pos = {x: 0, y: 0}
 
         // If the width of the element is too large, create above or under
         if(docRect.width - rect.width <= docRect.width / 2) {
-            // if(rect.bottom < docRect.height / 2) {
-
-            console.log(`rect.bottom : ${rect.bottom} -- w : ${window.innerHeight}`);
 
             if(rect.bottom < window.innerHeight / 2) {
                 // BOTTOM
-                console.log("IS TOP => GO BOTTOM");
-                pos.x = rect.left + (rect.width / 2) - (bubbleRect.width / 2);
+                pos.x = rect.left + (rect.width / 2) - (popupRect.width / 2);
                 pos.y = rect.bottom + offset;
             } else {
                 // TOP
-                console.log("IS BOTTOM => GO TOP");
-                pos.x = rect.left + (rect.width / 2) - (bubbleRect.width / 2);
-                pos.y = rect.top - offset - bubbleRect.height; 
+                pos.x = rect.left + (rect.width / 2) - (popupRect.width / 2);
+                pos.y = rect.top - offset - popupRect.height; 
             }
         } else {
             // Define if left or right
             if(rect.right < docRect.width / 2) {
                 // RIGHT
-                console.log("IS LEFT => GO RIGHT");
                 pos.x = rect.right + offset;
-                pos.y = rect.top + (rect.height / 2) - (bubbleRect.height / 2);
+                pos.y = rect.top + (rect.height / 2) - (popupRect.height / 2);
             } else {
                 // LEFT
-                console.log("IS RIGHT => GO LEFT");
-                pos.x = rect.left - offset - bubbleRect.width;
-                pos.y = rect.top + (rect.height / 2) - (bubbleRect.height / 2);
+                pos.x = rect.left - offset - popupRect.width;
+                pos.y = rect.top + (rect.height / 2) - (popupRect.height / 2);
             }
         }
 
@@ -328,15 +231,15 @@ class Tour {
         pos.y = Math.abs(pos.y);
 
         // Bound to window size
-        pos.x = pos.x > window.innerWidth ? pos.x - bubbleRect.width : pos.x;
-        pos.y = pos.y > window.innerHeight ? pos.y - bubbleRect.height : pos.y;
+        pos.x = (pos.x > window.innerWidth - popupRect.width) ? pos.x - popupRect.width : pos.x;
+        pos.y = (pos.y > window.innerHeight - popupRect.height) ? pos.y - popupRect.height : pos.y;
 
         return pos;
     }
 
     /**
      * Returns if the element is on the top or bottom of the page
-     * @param {DOMElement} element The element frow which to get the position
+     * @param {HTMLElement} element The element frow which to get the position
      * @returns {boolean} true if element is on top, false if on bottom
      */
     getTopOrBottom(element) {
@@ -346,20 +249,20 @@ class Tour {
     }
 
     /**
-     * Creates the help bubble
+     * Creates the help popup
      */
-    createBubble() {
-        const bubble = document.createElement('div');
-        bubble.classList.add("tour-bubble-container");
-        document.body.append(bubble);
-        this.helpBubbleElement = bubble;
+    createPopup() {
+        const popup = document.createElement('div');
+        popup.classList.add("tour-popup-container");
+        document.body.append(popup);
+        this.popupElement = popup;
     }
 
     /**
-     * Updates the help bubble content for the current step
+     * Updates the help popup content for the current step
      */
-    updateBubble() {
-        const bubble = this.helpBubbleElement;
+    updatePopup() {
+        const popup = this.popupElement;
 
         // Format text
         let text = this.steps[this.step].text;
@@ -367,33 +270,51 @@ class Tour {
             text = text.replace("PLACEHOLDER-" + variable, this.textVariables[variable]);
         }
 
+        let prevText = "Previous";
+        let nextText = "Next";
+        let endText = "End tour";
+
+        if(this.options.language) {
+            const lang = this.options.language;
+
+            switch (lang) {
+                case "fr":
+                    prevText = "Retour";
+                    nextText = "Suivant";
+                    endText = "Terminer le tour";
+                    break
+
+                default:
+                    break;
+            }
+        }
+
         let html = `
             <p>${text}</p>
             <div class="tour-button-container"> `;
         
         if(this.step != 0) {
-
-            html += `<button class="tour-button tour-button--previous" onclick="${this.varName}.previous()">Retour</button>`;
+            html += `<button class="tour-button tour-button--previous" onclick="${this.varName}.previous()">${prevText}</button>`;
         }
 
-        html += `<button class="tour-button tour-button--next" onclick="${this.varName}.next()">Suivant</button>
+        html += `<button class="tour-button tour-button--next" onclick="${this.varName}.next()">${this.isLastStep() ? endText : nextText}</button>
             </div>
         `;
 
-        bubble.innerHTML = html;
+        popup.innerHTML = html;
 
         // Re-assign to be able to get DOMRect with content inside.
-        this.helpBubbleElement = bubble;
+        this.popupElement = popup;
     }
 
     /**
-     * Moves the bubble to the coordinates
+     * Moves the popup to the coordinates
      * @param {object} coordinates x/y coordinates
      */
-    moveBubble(coordinates) {
-        const bubble = this.helpBubbleElement;
-        bubble.style.left = coordinates.x + "px";
-        bubble.style.top = coordinates.y + "px";
+    movePopup(coordinates) {
+        const popup = this.popupElement;
+        popup.style.left = coordinates.x + "px";
+        popup.style.top = coordinates.y + "px";
     }
 
     /**
