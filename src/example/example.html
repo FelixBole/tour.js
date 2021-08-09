@@ -29,14 +29,16 @@
 
     <div class="mid-container">
         <div class="content top">
-            <div id="step6" class="left"></div>
+            <div id="step6" class="left" style="display: flex; justify-content: center; align-items: center;">
+                <div id="step8" style="background: blue;width: 50px;height: 50px;"></div>
+            </div>
             <div id="step7" class="right"></div>
         </div>
     </div>
 
     <!-- <script src="./../classes/Spotlight.js"></script>
     <script src="./../classes/Tour.js"></script> -->
-    <script src="./../../dist/tour.js"></script>
+    <script src="./../../dist/tour.min.js"></script>
     
     <script>
         let tour;
@@ -70,13 +72,15 @@
                 },
                 {
                     id: "step7",
-                    text: "The help bubble adapts its position to the position and size of the targeted element."
+                    text: "The help popup adapts its position to the position and size of the targeted element."
+                },
+                {
+                    id: "step8",
+                    text: "Also, the popup is fully customizable from the attached tour.css file."
                 }
             ];
 
             tour = new Tour("tour", steps);
-
-            console.log(tour);
 
             const textVariables = {
                 NAME: "Friend",
@@ -84,7 +88,7 @@
             }
 
             const options = {
-                disableScroll: true,
+                disableScroll: false,
                 spotlight: true,
                 language: "en"
             }

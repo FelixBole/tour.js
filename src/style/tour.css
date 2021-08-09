@@ -3,11 +3,11 @@
   font-family: 'KoHo', sans-serif;
 }
 
-.tour-bubble-container {
+.tour-popup-container {
   z-index: 1000;
   position: fixed;
   background: white;
-  border-radius: 20px;
+  border-radius: 10px;
   -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
           box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 20px;
@@ -29,11 +29,12 @@
   transition: all 0.3s ease;
 }
 
-.tour-bubble-container p {
+.tour-popup-container p {
   color: black;
 }
 
-.tour-bubble-container .tour-button-container {
+.tour-popup-container .tour-button-container {
+  padding: 10px 0px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -49,21 +50,21 @@
   width: 100%;
 }
 
-.tour-bubble-container .tour-button-container .tour-button {
-  border-radius: 15px;
+.tour-popup-container .tour-button-container .tour-button {
+  border-radius: 3px;
   padding: 10px;
   -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
           box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border: none;
 }
 
-.tour-bubble-container .tour-button-container .tour-button--previous {
-  background-color: #21bbee;
+.tour-popup-container .tour-button-container .tour-button--previous {
+  background-color: #ffb168;
   color: white;
 }
 
-.tour-bubble-container .tour-button-container .tour-button--next {
-  background-color: #18243f;
+.tour-popup-container .tour-button-container .tour-button--next {
+  background-color: #6875ff;
   color: white;
 }
 
