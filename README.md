@@ -61,12 +61,12 @@ tour.options.disableScroll = false;
 
 Possible options:
 
-Key | Type | Default
-----|------|--------
-`disableScroll` | boolean | true
-`spotlight` | object (Spotlight) | true
-`language` | string | "en"
-`scrollMargin` | number | 50
+Key | Type | Default | Description
+----|------|---------|------------
+`disableScroll` | boolean | true | If scroll should be disabled when popups are shown
+`spotlight` | object (Spotlight) | true | If a spotlight should be activated during the tour
+`language` | string | "en" | The language for the buttons on the popup
+`scrollMargin` | number | 50 | The scroll margin when the system scrolls to the targetted element
 
 <br/>
 
