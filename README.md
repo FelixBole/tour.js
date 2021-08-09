@@ -53,6 +53,21 @@ const options = {
 tour.setOptions(options);
 ```
 
+It is also possible to set options independantly on the instance. For example : 
+```javascript
+tour.options.disableScroll = false;
+```
+
+Possible options:
+
+Key | Type | Default
+----|------|--------
+`disableScroll` | boolean | true
+`spotlight` | object (Spotlight) | true
+`language` | string | "en"
+
+<br/>
+
 ### `Text variables`
 
 If needed you have the option the set text variables that will be replaced in the popup text by what you have specified by calling `.setTextVariables(textVariables)` on the tour instance and passing it an object containing the key/value pairs of your text variables. The system will look for keywords formed like the following **PLACEHOLDER-YOURTEXTVARIABLE** and replace it with what you specified for that keyword.
