@@ -196,8 +196,8 @@
 
         // Scroll first to get the right values of getBoundingClientRect
         element.style.scrollMargin = this.options.scrollMargin + "px";
+        
         element.scrollIntoView(this.getTopOrBottom(element));
-
         let docRect = document.body.getBoundingClientRect();
         let rect = element.getBoundingClientRect();
 
@@ -224,19 +224,30 @@
                 // RIGHT
                 pos.x = rect.right + offset;
                 pos.y = rect.top + (rect.height / 2) - (popupRect.height / 2);
+
+                // If popup too large for element, place under and re-scrollIntoView
+                if(docRect.width - popupRect.width < rect.right) {
+                    element.scrollIntoView(true);
+                    pos.x = rect.left + (rect.width / 2) - (popupRect.width / 2);
+                    pos.y = rect.bottom + offset;
+                }
+
             } else {
                 // LEFT
-                pos.x = rect.left - offset - popupRect.width;
+                pos.x = (rect.left - offset - popupRect.width) < 0 ? 0 : (rect.left - offset - popupRect.width);
                 pos.y = rect.top + (rect.height / 2) - (popupRect.height / 2);
+
+                // If popup too large for element, place under and re-scrollIntoView
+                if(popupRect.width > rect.left) {
+                    element.scrollIntoView(true);
+                    pos.x = rect.left + (rect.width / 2) - (popupRect.width / 2);
+                    pos.y = rect.bottom + offset;
+                }
             }
         }
 
         pos.x = Math.abs(pos.x);
         pos.y = Math.abs(pos.y);
-
-        // Bound to window size
-        pos.x = (pos.x > window.innerWidth - popupRect.width) ? pos.x - popupRect.width : pos.x;
-        pos.y = (pos.y > window.innerHeight - popupRect.height) ? pos.y - popupRect.height : pos.y;
 
         return pos;
     }

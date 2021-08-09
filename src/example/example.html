@@ -32,7 +32,9 @@
             <div id="step6" class="left" style="display: flex; justify-content: center; align-items: center;">
                 <div id="step8" style="background: blue;width: 50px;height: 50px;"></div>
             </div>
-            <div id="step7" class="right"></div>
+            <div id="step7" class="right" style="display: flex; justify-content: center; align-items: center;">
+                <div id="step9" style="background: rgb(177, 81, 25);width: 50px;height: 50px;"></div>
+            </div>
         </div>
     </div>
 
@@ -77,6 +79,10 @@
                 {
                     id: "step8",
                     text: "Also, the popup is fully customizable from the attached tour.css file."
+                },
+                {
+                    id: "step9",
+                    text: "Position adaptation test on the right."
                 }
             ];
 
@@ -88,7 +94,7 @@
             }
 
             const options = {
-                disableScroll: false,
+                disableScroll: true,
                 spotlight: true,
                 language: "en"
             }
