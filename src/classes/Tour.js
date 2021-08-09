@@ -39,7 +39,6 @@
         this.textVariables = {};
         this.options = {};
 
-
         this.setOptions();
     }
 
@@ -76,11 +75,13 @@
      * @param {boolean} options.disableScroll If the scroll should be disabled when the popup shows
      * @param {boolean} options.spotlight If the tour should contain a spotlight
      * @param {string} options.language (en or fr) sets the default language for the buttons on the help popup
+     * @param {number} options.scrollMargin The margin when scrolling to that element
      */
-    setOptions({disableScroll = true, spotlight = true, language = "en"} = {}) {
+    setOptions({disableScroll = true, spotlight = true, language = "en", scrollMargin = 50} = {}) {
         this.options.disableScroll = disableScroll;
         this.options.spotlight = spotlight;
         this.options.language = language;
+        this.options.scrollMargin = scrollMargin;
     }
 
     /**
@@ -160,6 +161,8 @@
 
         if(this.options.disableScroll)
             this.toggleScroll(false);
+
+        this.currentElement.scrollMargin = "0px";
     }
 
     /**
@@ -192,6 +195,7 @@
     getPopupPos(element) {
 
         // Scroll first to get the right values of getBoundingClientRect
+        element.style.scrollMargin = this.options.scrollMargin + "px";
         element.scrollIntoView(this.getTopOrBottom(element));
 
         let docRect = document.body.getBoundingClientRect();
