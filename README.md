@@ -116,3 +116,26 @@ Since the tour has already started, after obtaining a saved tour you need to cal
 ### `Changing the style of the popups`
 
 The tour uses an independent css file for its styling. That way, modifications to the style are very simple to adapt to your likings.
+
+The HTML structure of a popup looks like so :
+```html
+<div class="tour-popup-container">
+    <img src="SPECIFIED IMG IN STEP"> <!-- OPTIONAL -->
+    <p>SPECIFIED TEXT IN STEP</p>
+    <div class="tour-button-container">
+        <button class="tour-button tour-button--previous">Previous</button>
+        <button class="tour-button tour-button--next">Next</button>
+    </div>
+</div>
+```
+
+`CSS Classes`
+
+Class | Target
+------|-------
+`.tour-popup-container` | The popup container
+`.tour-button-container` | The container for previous / next buttons
+`.tour-button` | Generic class for the popup buttons
+`.tour-button--previous` | Previous button
+`.tour-button--next` | Next button
+`.tour-overlay` | The class for the dark overlay around the spotlight
