@@ -171,11 +171,7 @@
             coordinates = this.getCenterPos();
         }
 
-        let tmp = {beforeMove: this.popupElement.getBoundingClientRect()}
-
         this.movePopup(coordinates);
-
-        tmp.afterMove = this.popupElement.getBoundingClientRect();
 
         if(this.options.spotlight) {
             if(this.currentElement) {
@@ -185,8 +181,6 @@
                 this.spotlight.blackout();
             }
         }
-
-        console.log(tmp);
 
         if(this.options.disableScroll)
             this.toggleScroll(false);
