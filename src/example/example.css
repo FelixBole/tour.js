@@ -8,6 +8,7 @@
 body {
   width: 100vw;
   height: 300vh;
+  max-width: 100%;
   position: relative;
 }
 
@@ -118,5 +119,22 @@ body {
           transform-origin: center;
   top: 35%;
   left: 46%;
+}
+
+#step10 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#step10 .hidden {
+  height: 0px;
+  background: #000;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 /*# sourceMappingURL=example.css.map */

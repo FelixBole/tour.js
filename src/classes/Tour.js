@@ -40,6 +40,8 @@
         this.options = {};
 
         this.setOptions();
+
+        this.createResizeObserver();
     }
 
     /**
@@ -107,7 +109,7 @@
         if(this.currentState != 1) {
             this.currentState = 1;
 
-            this.setResizeEvent(true);
+            this.setWindowResizeEvent(true);
 
             this.createPopup();
 
@@ -125,6 +127,7 @@
      */
     previous() {
         this.step--;
+        this.toggleResizeObserver(false);
 
         this.makeStep();
     }
@@ -134,6 +137,7 @@
      */
     next() {
         this.step++;
+        this.toggleResizeObserver(false);
 
         if(this.step < this.steps.length) {
             this.makeStep();
@@ -149,10 +153,11 @@
         const elementId = this.steps[this.step].id;
 
         this.currentElement = document.getElementById(elementId);
+        this.toggleResizeObserver(true);
 
         this.updatePopup();
 
-        const coordinates = this.getPopupPos(this.currentElement);
+        const coordinates = this.getPopupPos();
 
         this.movePopup(coordinates);
 
@@ -162,7 +167,7 @@
         if(this.options.disableScroll)
             this.toggleScroll(false);
 
-        this.currentElement.scrollMargin = "0px";
+        this.currentElement.scrollMarginTop = "0px";
     }
 
     /**
@@ -171,7 +176,7 @@
     endTour() {
         this.currentState = 2;
         this.popupElement.remove();
-        this.setResizeEvent(false);
+        this.setWindowResizeEvent(false);
         
         if(this.options.spotlight)
             this.spotlight.kill();
@@ -189,18 +194,18 @@
 
     /**
      * Returns the document coordinates where the block should be created
-     * @param {DOMElement} element The target element
      * @returns {object} x and y coordinates
      */
-    getPopupPos(element) {
+    getPopupPos() {
 
         // Scroll first to get the right values of getBoundingClientRect
-        element.style.scrollMargin = this.options.scrollMargin + "px";
-        
-        element.scrollIntoView(this.getTopOrBottom(element));
-        let docRect = document.body.getBoundingClientRect();
-        let rect = element.getBoundingClientRect();
+        this.currentElement.style.scrollMarginTop = this.options.scrollMargin + "px";
 
+        const scrollTop = this.getTopOrBottom(this.currentElement);
+        this.currentElement.scrollIntoView(scrollTop);
+
+        const docRect = document.body.getBoundingClientRect();
+        const rect = this.currentElement.getBoundingClientRect();
         const popupRect = this.popupElement.getBoundingClientRect();
         
         const offset = 10;
@@ -227,7 +232,7 @@
 
                 // If popup too large for element, place under and re-scrollIntoView
                 if(docRect.width - popupRect.width < rect.right) {
-                    element.scrollIntoView(true);
+                    this.currentElement.scrollIntoView(true);
                     pos.x = rect.left + (rect.width / 2) - (popupRect.width / 2);
                     pos.y = rect.bottom + offset;
                 }
@@ -239,7 +244,7 @@
 
                 // If popup too large for element, place under and re-scrollIntoView
                 if(popupRect.width > rect.left) {
-                    element.scrollIntoView(true);
+                    this.currentElement.scrollIntoView(true);
                     pos.x = rect.left + (rect.width / 2) - (popupRect.width / 2);
                     pos.y = rect.bottom + offset;
                 }
@@ -279,8 +284,10 @@
     updatePopup() {
         const popup = this.popupElement;
 
+        const step = this.steps[this.step];
+
         // Format text
-        let text = this.steps[this.step].text;
+        let text = step.text;
         for(let variable in this.textVariables) {
             text = text.replace("PLACEHOLDER-" + variable, this.textVariables[variable]);
         }
@@ -304,15 +311,26 @@
             }
         }
 
-        let html = `
-            <p>${text}</p>
-            <div class="tour-button-container"> `;
-        
-        if(this.step != 0) {
-            html += `<button class="tour-button tour-button--previous" onclick="${this.varName}.previous()">${prevText}</button>`;
+        let html = "";
+
+        if(step.img && step.img != "") {
+            html += `<img src="${step.img}"/>`
         }
 
-        html += `<button class="tour-button tour-button--next" onclick="${this.varName}.next()">${this.isLastStep() ? endText : nextText}</button>
+        html += `
+            <p>${text}</p>
+            <div class="tour-button-container"> `;
+
+        if(this.step != 0) {
+            html += `
+                <button class="tour-button tour-button--previous" onclick="${this.varName}.previous()">
+                    ${prevText}
+                </button>`;
+        }
+
+        html += `<button class="tour-button tour-button--next" onclick="${this.varName}.next()">
+                    ${this.isLastStep() ? endText : nextText}
+                </button>
             </div>
         `;
 
@@ -354,7 +372,7 @@
      * Recalculate on window resize
      * @param {boolean} shouldResize if resizing the window should recalculate position.
      */
-    setResizeEvent(shouldResize) {
+    setWindowResizeEvent(shouldResize) {
 
         if(shouldResize) {
             let doit;
@@ -365,10 +383,36 @@
     
                     // Make current step to recalculate
                     this.makeStep();
-                } ,100)
+                }, 100);
             };
         } else {
             window.onresize = () => {};
+        }
+    }
+
+    /**
+     * Create a ResizeOberver for the current element
+     */
+    createResizeObserver() {
+        let doit;
+        this.resizeObserver = new ResizeObserver((entries) => {
+            clearTimeout(doit);
+            doit = setTimeout(() => {
+                // Haven't resized in 20ms
+                this.makeStep(entries[0]);
+            }, 20);
+        });
+    }
+
+    /**
+     * If targetting an element that can expand, allows the spotlight to follow
+     * @param {boolean} shouldResize if resizing the element should call the event
+     */
+    toggleResizeObserver(shouldResize) {
+        if(shouldResize) {
+            this.resizeObserver.observe(this.currentElement);
+        } else {
+            this.resizeObserver.unobserve(this.currentElement);
         }
     }
 }

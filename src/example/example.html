@@ -38,9 +38,35 @@
         </div>
     </div>
 
-    <!-- <script src="./../classes/Spotlight.js"></script>
-    <script src="./../classes/Tour.js"></script> -->
-    <script src="./../../dist/tour.min.js"></script>
+    <div class="bot-container">
+        <div class="content top">
+            <div class="left">
+                <div id="step10">
+
+                    <button id="expand-btn">Expand</button>
+                    <div class="hidden"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script not related to tour.js - For expand button showcase -->
+    <script>
+        document.getElementById('expand-btn').addEventListener('click', () => {
+            const btn = document.querySelector('.hidden');
+            if(!btn.style.height) {
+                btn.style.height = "150px";
+            } else {
+                btn.style.height = null;
+            }
+            
+        });
+    </script>
+
+    <!-- tour.js scripts -->
+    <script src="./../classes/Spotlight.js"></script>
+    <script src="./../classes/Tour.js"></script>
+    <!-- <script src="./../../dist/tour.min.js"></script> -->
     
     <script>
         let tour;
@@ -82,7 +108,12 @@
                 },
                 {
                     id: "step9",
-                    text: "Position adaptation test on the right."
+                    text: "You can also add an image to the popup by specifying it in the step and giving the src to the 'img' key.",
+                    img: "https://www.w3schools.com/images/lamp.jpg"
+                },
+                {
+                    id: "step10",
+                    text: "The spotlight will adapt to the resizing of elements if they need expansion/collapsing during the tour. Go ahead, try it."
                 }
             ];
 
@@ -94,9 +125,10 @@
             }
 
             const options = {
-                disableScroll: true,
+                disableScroll: false,
                 spotlight: true,
-                language: "en"
+                language: "en",
+                scrollMargin: 50,
             }
 
             tour.setTextVariables(textVariables);
