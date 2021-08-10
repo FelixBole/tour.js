@@ -51,6 +51,7 @@
 }
 
 .tour-popup-container .tour-button-container .tour-button {
+  cursor: pointer;
   border-radius: 3px;
   padding: 10px;
   -webkit-box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -63,9 +64,17 @@
   color: white;
 }
 
+.tour-popup-container .tour-button-container .tour-button--previous:hover {
+  background-color: #f0b277;
+}
+
 .tour-popup-container .tour-button-container .tour-button--next {
   background-color: #6875ff;
   color: white;
+}
+
+.tour-popup-container .tour-button-container .tour-button--next:hover {
+  background-color: #7782f0;
 }
 
 .tour-overlay {

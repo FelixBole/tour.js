@@ -6,7 +6,7 @@
  * MIT license: http://opensource.org/licenses/MIT
  * GitHub : github.com/FelixBole/tour.js
  * How to use : Check Github README
- * v1.0.0
+ * v1.1.0
  * 
  */
  class Spotlight {
@@ -57,6 +57,16 @@
 
         this.spotlight[3].style.height = rect.height + (this.padding * 2) + "px";
         this.spotlight[1].style.height = rect.height + (this.padding * 2) + "px";
+    }
+
+    /**
+     * Fills the viewport with black squares
+     */
+    blackout() {
+        this.spotlight[0].style.top = "0px";
+        this.spotlight[1].style.left = this.spotlight[1].getBoundingClientRect().width + "px";
+        this.spotlight[2].style.top = this.spotlight[2].getBoundingClientRect().height + "px";
+        this.spotlight[3].style.left = "-" + this.spotlight[3].getBoundingClientRect().width + "px";
     }
     
     /**

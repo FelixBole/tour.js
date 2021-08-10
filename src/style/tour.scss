@@ -34,6 +34,7 @@ $secondary: #ffb168;
         width: 100%;
     
         .tour-button {
+            cursor: pointer;
             border-radius: 3px;
             padding: 10px;
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -42,11 +43,19 @@ $secondary: #ffb168;
             &--previous {
                 background-color: $secondary;
                 color: white;
+
+                &:hover {
+                    background-color: desaturate($secondary,  20%);
+                }
             }
         
             &--next {
                 background-color: $primary;
                 color: white;
+
+                &:hover {
+                    background-color: desaturate($primary,  20%);
+                }
             }
         }
     }

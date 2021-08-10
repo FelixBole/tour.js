@@ -5,7 +5,7 @@
  * MIT license: http://opensource.org/licenses/MIT
  * GitHub : github.com/FelixBole/tour.js
  * How to use : Check Github README
- * v1.0.0
+ * v1.1.0
  * 
  */
  class Tour {
@@ -127,7 +127,9 @@
      */
     previous() {
         this.step--;
-        this.toggleResizeObserver(false);
+
+        if(this.currentElement)
+            this.toggleResizeObserver(false);
 
         this.makeStep();
     }
@@ -137,7 +139,9 @@
      */
     next() {
         this.step++;
-        this.toggleResizeObserver(false);
+
+        if(this.currentElement)
+            this.toggleResizeObserver(false);
 
         if(this.step < this.steps.length) {
             this.makeStep();
@@ -152,22 +156,43 @@
     makeStep() {
         const elementId = this.steps[this.step].id;
 
-        this.currentElement = document.getElementById(elementId);
-        this.toggleResizeObserver(true);
-
         this.updatePopup();
 
-        const coordinates = this.getPopupPos();
+        let coordinates;
+        
+        if(elementId) {
+            this.currentElement = document.getElementById(elementId);
+            this.toggleResizeObserver(true); //! This makes it that makeStep is fired twice -> To improve
+
+            coordinates = this.getPopupPos();
+        } else {
+            // No id specified, place popup in the middle
+            this.currentElement = null;
+            coordinates = this.getCenterPos();
+        }
+
+        let tmp = {beforeMove: this.popupElement.getBoundingClientRect()}
 
         this.movePopup(coordinates);
 
-        if(this.options.spotlight)
-            this.spotlight.move(this.currentElement);
+        tmp.afterMove = this.popupElement.getBoundingClientRect();
+
+        if(this.options.spotlight) {
+            if(this.currentElement) {
+                this.spotlight.move(this.currentElement);
+            } else {
+                // this.spotlight.move(this.popupElement);
+                this.spotlight.blackout();
+            }
+        }
+
+        console.log(tmp);
 
         if(this.options.disableScroll)
             this.toggleScroll(false);
 
-        this.currentElement.scrollMarginTop = "0px";
+        if(elementId)
+            this.currentElement.scrollMarginTop = "0px";
     }
 
     /**
@@ -253,6 +278,20 @@
 
         pos.x = Math.abs(pos.x);
         pos.y = Math.abs(pos.y);
+
+        return pos;
+    }
+
+    /**
+     * Returns center of the viewport x and y coordinates
+     * @returns {object} x/y coordinates
+     */
+    getCenterPos() {
+        const popupRect = this.popupElement.getBoundingClientRect();
+        const pos = {x: 0, y: 0};
+
+        pos.x = (window.innerWidth / 2) - (popupRect.width / 2);
+        pos.y = (window.innerHeight / 2) - (popupRect.height / 2);
 
         return pos;
     }
@@ -345,9 +384,8 @@
      * @param {object} coordinates x/y coordinates
      */
     movePopup(coordinates) {
-        const popup = this.popupElement;
-        popup.style.left = coordinates.x + "px";
-        popup.style.top = coordinates.y + "px";
+        this.popupElement.style.left = coordinates.x + "px";
+        this.popupElement.style.top = coordinates.y + "px";
     }
 
     /**

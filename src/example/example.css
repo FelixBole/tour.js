@@ -121,6 +121,19 @@ body {
   left: 46%;
 }
 
+#expand-btn {
+  padding: 5px 0;
+  background: goldenrod;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+
+#expand-btn:hover {
+  background: white;
+  color: black;
+}
+
 #step10 {
   display: -webkit-box;
   display: -ms-flexbox;
